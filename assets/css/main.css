@@ -10,3 +10,7 @@ html {
   background: none !important;
 }
 
+.v-sheet.v-card {
+  border-radius: 0px !important;
+  background-color: rgba(255,255,255,.75) !important;
+}
