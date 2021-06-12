@@ -16,16 +16,24 @@
               grow
             >
               <ko-logo></ko-logo>
-              <v-tab>
+              <v-tab
+                to="/"
+                nuxt>
                 Home
               </v-tab>
-              <v-tab>
+              <v-tab
+                to="/code"
+                nuxt>
                 Code
               </v-tab>
-              <v-tab>
+              <v-tab
+                to="/music"
+                nuxt>
                 Music
               </v-tab>
-              <v-tab>
+              <v-tab
+                to="/about"
+                nuxt>
                 About
               </v-tab>
             </v-tabs>
@@ -37,7 +45,7 @@
 <script>
   import KoLogo from './KoLogo.vue'
   export default {
-  components: { KoLogo },
+    components: { KoLogo },
     data () {
       return {
         bgColor: "rgba(255,255,255,0)",
