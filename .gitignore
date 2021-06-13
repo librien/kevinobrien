@@ -88,4 +88,4 @@ sw.*
 
 # Vim swap files
 *.swp
-static/media/facewave.mp3
+static/media/*.mp3
