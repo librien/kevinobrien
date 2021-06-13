@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
-      <wavesurfer :src="file" :options="options" style="background-color: rgba(0,0,0,.05)"></wavesurfer>
+      <Wavesurfer :mediaVolume="mediaVolume" ref="wavesurfer" />
       <v-card
         class="mx-auto"
       >
@@ -15,8 +15,9 @@
           <v-btn icon>
             <v-icon>mdi-skip-previous</v-icon>
           </v-btn>
-          <v-btn color="#848484" small elevation="0" fab>
-            <v-icon color="white">mdi-play</v-icon>
+          <v-btn @click="play" color="#848484" small elevation="0" fab>
+            <v-icon color="white" v-if="!isPlaying">mdi-play</v-icon>
+            <v-icon color="white" v-if="isPlaying">mdi-pause</v-icon>
           </v-btn>
           <v-btn icon>
             <v-icon>mdi-skip-next</v-icon>
@@ -32,6 +33,7 @@
             dense
             append-icon="mdi-volume-high"
             hide-details="true"
+            @change="setVolume"
             thumb-label
           ></v-slider>
 
@@ -53,8 +55,11 @@
           <v-list-item>
             <v-list-item-icon>
               <v-btn icon>
-                <v-icon color="black">
+                <v-icon v-show="isPlaying == false" color="black">
                   mdi-play
+                </v-icon>
+                <v-icon v-show="isPlaying == true" color="black">
+                  mdi-pause
                 </v-icon>
               </v-btn>
             </v-list-item-icon>
@@ -74,14 +79,34 @@
   </v-row>
 </template>
 <script>
+  import Wavesurfer from '~/components/Wavesurfer.vue';
   export default {
+    components: { Wavesurfer },
     data() {
       return {
         mediaVolume: 75,
-        options: {},
-        file: "http://localhost:3000/media/facewave.mp3",
-      };
+        isMounted: false
+      }
     },
+    computed: {
+      isPlaying() {
+        if (!this.isMounted) {
+          return;
+        }
+        return this.$refs.wavesurfer.player.isPlaying();
+      }
+    },
+    methods: {
+      play: function(){
+        this.$refs.wavesurfer.player.playPause();
+      },
+      setVolume: function(){
+        this.$refs.wavesurfer.player.setVolume(this.mediaVolume / 100);
+      }
+    },
+    mounted(){
+      this.isMounted = true;
+    }
   }
 </script>
 <style scoped>
