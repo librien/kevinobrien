@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
-      <Wavesurfer :mediaVolume="mediaVolume" ref="wavesurfer" />
+      <Wavesurfer :src="currentSong" :mediaVolume="mediaVolume" ref="wavesurfer" />
       <v-card
         class="mx-auto"
       >
@@ -15,11 +15,13 @@
           <v-btn icon>
             <v-icon>mdi-skip-previous</v-icon>
           </v-btn>
-          <v-btn @click="play" color="#848484" small elevation="0" fab>
-            <v-icon color="white" v-if="!isPlaying">mdi-play</v-icon>
-            <v-icon color="white" v-if="isPlaying">mdi-pause</v-icon>
+          <v-btn @click="play" color="#848484" v-if="!isPlaying" small elevation="0" fab>
+            <v-icon color="white" >mdi-play</v-icon>
           </v-btn>
-          <v-btn icon>
+          <v-btn @click="pause" color="#848484" v-if="isPlaying" small elevation="0" fab>
+            <v-icon color="white" >mdi-pause</v-icon>
+          </v-btn>
+          <v-btn @click="nextSong" icon>
             <v-icon>mdi-skip-next</v-icon>
           </v-btn>
           <v-btn icon>
@@ -38,19 +40,6 @@
           ></v-slider>
 
         </v-app-bar>
-        <!--
-          <v-img
-          src="https://cdn.vuetifyjs.com/images/lists/ali.png"
-          height="300px"
-          dark
-        >
-          <v-row class="fill-height">
-            <v-card-title>
-            </v-card-title>
-
-          </v-row>
-        </v-img>
-        -->
         <v-list two-line>
           <v-list-item>
             <v-list-item-icon>
@@ -85,7 +74,46 @@
     data() {
       return {
         mediaVolume: 75,
-        isMounted: false
+        isMounted: false,
+        playlist: (function() {
+          const albums = [
+            {
+              'Title': 'Scotia Major',
+              'Songs': [
+                {
+                  'Title': '4 Yellow Sides',
+                  'Url': 'http://localhost:3000/media/4yellowsides.mp3'
+                },
+                {
+                  'Title': 'Facewave',
+                  'Url': 'http://localhost:3000/media/facewave.mp3'
+                }
+              ]
+            },
+            {
+              'Title': 'The Earth Spinning Years',
+              'Songs': [
+                {
+                  'Title': 'Borrador',
+                  'Url': 'http://localhost:3000/media/borrador.mp3'
+                },
+                {
+                  'Title': 'Panopticon',
+                  'Url': 'http://localhost:3000/media/panopticon.mp3'
+                }
+              ]
+            }
+          ]
+
+          let playlist = [];
+          albums.map(function (album) {
+            album.Songs.map(function (song) {
+              playlist.push(song);
+            })
+          })
+          return playlist
+        })(),
+        currentSong: null
       }
     },
     computed: {
@@ -94,18 +122,35 @@
           return;
         }
         return this.$refs.wavesurfer.player.isPlaying();
-      }
+      },
     },
     methods: {
-      play: function(){
-        this.$refs.wavesurfer.player.playPause();
+      play: function (){
+        this.$refs.wavesurfer.player.play();
       },
-      setVolume: function(){
+      pause: function (){
+        this.$refs.wavesurfer.player.pause();
+      },
+      nextSong: function () {
+        let wasPlaying = this.isPlaying;
+        console.log(this.$refs.wavesurfer);
+        this.$refs.wavesurfer.player.stop()
+        this.setCurrentSong(this.playlist[this.playlist.indexOf(this.currentSong) + 1])
+        if (wasPlaying) {
+          this.$refs.wavesurfer.player.play()
+        }
+      },
+      setVolume: function (){
         this.$refs.wavesurfer.player.setVolume(this.mediaVolume / 100);
+      },
+      setCurrentSong: function (newSong) {
+        this.currentSong = newSong
+        this.$refs.wavesurfer.player.load(newSong.Url)
       }
     },
     mounted(){
       this.isMounted = true;
+      this.setCurrentSong(this.playlist[0]) // Load first song in playlist by default
     }
   }
 </script>
