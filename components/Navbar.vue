@@ -62,7 +62,6 @@
           this.bgColor = "rgba(255,255,255,1)";
         }
         else {
-          console.log(top/64);
           this.bgColor = `rgba(255,255,255,${top/64})`;
         }
       }
