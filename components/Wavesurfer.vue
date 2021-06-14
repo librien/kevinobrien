@@ -1,31 +1,35 @@
 <template>
-  <wavesurfer
-    :src="file"
-    :options="options"
-    style="background-color: rgba(0, 0, 0, 0.05)"
-    ref="surf"
-  ></wavesurfer>
+  <div id="waveform"></div>
 </template>
 <script>
+import WaveSurfer from "wavesurfer.js";
 export default {
-  props: ["src"],
-  mounted() {
-    console.log(this.src);
-    console.log(this);
-    this.player.on("ready", () => {});
-    this.file = this.src.get().Url;
-    console.log(this.src);
-  },
-  computed: {
-    player() {
-      return this.$refs.surf.waveSurfer;
-    },
-  },
   data() {
     return {
-      options: {},
-      file: null,
+      isLoading: false,
+      wavesurfer: null
     };
+  },
+  props: ["src"],
+  async mounted() {
+    if (!this.wavesurfer) this.createWaveSurfer();
+    if (this.src) {
+      this.wavesurfer.load(this.src.Url);
+    }
+  },
+  methods: {
+    createWaveSurfer() {
+      this.wavesurfer = WaveSurfer.create({
+        container: "#waveform",
+        hideScrollbar: true,
+      });
+      this.wavesurfer.on("error", err => {
+        console.error(err);
+      });
+    },
+  },
+  computed: {
+    
   },
 };
 </script>
