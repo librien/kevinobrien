@@ -163,10 +163,17 @@ export default {
     },
   },
   methods: {
+    init: function () {
+      let _wavesurfer = this.$refs.wavesurfer.wavesurfer;
+      this.$nextTick(() => {
+        this.setCurrentSong(this.playlist[0], false); // Load first song in playlist by default
+        this.songOrder = this.setSongOrder(false);
+        this.onFinish(); // Is this negatively impacting performance?
+      })
+    },
     play: function () {
       let _wavesurfer = this.$refs.wavesurfer.wavesurfer;
       _wavesurfer.play();
-      this.onFinish();
     },
     pause: function () {
       let _wavesurfer = this.$refs.wavesurfer.wavesurfer;
@@ -181,23 +188,45 @@ export default {
       let _wavesurfer = this.$refs.wavesurfer.wavesurfer;
       let _this = this;
       _wavesurfer.on("finish", function () {
-        // Implement Repeat function here
-        _this.nextSong(true);
+        _this.nextSong(true, true);
       });
     },
-    nextSong: function (wasPlaying) {
+    nextSong: function (wasPlaying, onFinish) {
       let _wavesurfer = this.$refs.wavesurfer.wavesurfer;
       if (this.isPlaying) {
         wasPlaying = true;
       }
       let currentIndex = this.songOrder.indexOf(this.songOrder.find(index => index == this.playlist.indexOf(this.currentSong)));
-      let newIndex;
+      let newIndex = null;
+      if (this.repeat == 'once') {
+        if (onFinish) {
+          _wavesurfer.play();
+          return;
+        }
+        else {
+          this.repeat = 'on';
+        }
+      }
       if (currentIndex == this.playlist.length - 1) {
-        newIndex = this.songOrder[0];
+        // If nextSong() is being called from onFinish()
+        if (onFinish) {
+          // If repeat set to on then set new song index to first element in song order array
+          if (this.repeat == 'on') {
+            newIndex = this.songOrder[0];
+          }
+          else {
+            newIndex = undefined;
+          }
+        }
+        else {
+          newIndex = this.songOrder[0];
+        }
       } else {
         newIndex = this.songOrder[currentIndex + 1];
       }
-      this.setCurrentSong(this.playlist[newIndex], wasPlaying);
+      if (newIndex != undefined) {
+        this.setCurrentSong(this.playlist[newIndex], wasPlaying);
+      }
     },
     prevSong: function () {
       let _wavesurfer = this.$refs.wavesurfer.wavesurfer;
@@ -299,8 +328,7 @@ export default {
   },
   mounted() {
     this.isMounted = true;
-    this.setCurrentSong(this.playlist[0], false); // Load first song in playlist by default
-    this.songOrder = this.setSongOrder(false);
+    this.init();
   },
 };
 </script>
