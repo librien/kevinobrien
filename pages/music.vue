@@ -71,16 +71,18 @@
         <v-list two-line>
           <v-list-item v-for="song in this.playlist" :key="song.Title">
             <v-list-item-icon>
-              <v-btn fab x-small elevation="0" v-if="song != currentSong">
-                <v-icon @click="setCurrentSong(song, true)" color="black">
+              <v-btn fab x-small @click="setCurrentSong(song, true)" elevation="0" v-if="song != currentSong">
+                <v-icon color="black">
                   mdi-play
                 </v-icon>
               </v-btn>
-              <v-btn fab x-small elevation="0" v-if="song == currentSong">
-                <v-icon @click="pause" v-show="isPlaying == true" color="black">
+              <v-btn fab x-small @click="pause" elevation="0" v-if="song == currentSong && isPlaying == true">
+                <v-icon color="black">
                   mdi-pause
                 </v-icon>
-                <v-icon @click="play" v-show="isPlaying == false" color="black">
+              </v-btn>
+              <v-btn fab x-small @click="play" elevation="0" v-if="song == currentSong && isPlaying == false">
+                <v-icon color="black">
                   mdi-play
                 </v-icon>
               </v-btn>
