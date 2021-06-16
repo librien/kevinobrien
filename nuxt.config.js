@@ -49,10 +49,28 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/firebase',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
+
+  // Firebase module configuration
+  firebase: {
+    config: {
+      apiKey: "AIzaSyA-FbX_fGENtwqror1k1UmdIoozXvycRNg",
+      authDomain: "kevinobrien-dev.firebaseapp.com",
+      databaseURL: "https://kevinobrien-dev-default-rtdb.firebaseio.com",
+      projectId: "kevinobrien-dev",
+      storageBucket: "kevinobrien-dev.appspot.com",
+      messagingSenderId: "808556729269",
+      appId: "1:808556729269:web:0bada481a15a30d16dfffc",
+      measurementId: "G-4QZMBGH8WB"
+    },
+    services: {
+      auth: true // Just as example. Can be any other service.
+    }
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
