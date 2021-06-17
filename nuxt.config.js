@@ -69,7 +69,8 @@ export default {
       measurementId: "G-4QZMBGH8WB"
     },
     services: {
-      auth: true 
+      auth: true,
+      storage: true
     }
   },
 
