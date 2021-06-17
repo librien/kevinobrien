@@ -43,6 +43,7 @@ export default {
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
+    '@nuxtjs/firebase',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -68,7 +69,7 @@ export default {
       measurementId: "G-4QZMBGH8WB"
     },
     services: {
-      auth: true // Just as example. Can be any other service.
+      auth: true 
     }
   },
 
