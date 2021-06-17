@@ -106,48 +106,14 @@
 import Wavesurfer from "~/components/Wavesurfer.vue";
 export default {
   components: { Wavesurfer },
+  created () {
+  },
   data() {
     let _this = this;
     return {
       mediaVolume: 75,
       isMounted: false,
-      playlist: (function () {
-        const albums = [
-          {
-            Title: "Scotia Major",
-            Songs: [
-              {
-                Title: "4 Yellow Sides",
-                Url: "http://localhost:3000/media/4yellowsides.mp3",
-              },
-              {
-                Title: "Facewave",
-                Url: "http://localhost:3000/media/facewave.mp3",
-              },
-            ],
-          },
-          {
-            Title: "The Earth Spinning Years",
-            Songs: [
-              {
-                Title: "Borrador",
-                Url: "http://localhost:3000/media/borrador.mp3",
-              },
-              {
-                Title: "Panopticon",
-                Url: "http://localhost:3000/media/panopticon.mp3",
-              },
-            ],
-          },
-        ];
-        let playlist = [];
-        albums.map(function (album) {
-          album.Songs.map(function (song) {
-            playlist.push(song);
-          });
-        });
-        return playlist;
-      })(),
+      playlist: null,
       songOrder: [],
       currentSong: null,
       isReady: false,
@@ -167,11 +133,17 @@ export default {
   methods: {
     init: function () {
       let _wavesurfer = this.$refs.wavesurfer.wavesurfer;
+      this.playlist = this.getSongs();
       this.$nextTick(() => {
         this.setCurrentSong(this.playlist[0], false); // Load first song in playlist by default
         this.songOrder = this.setSongOrder(false);
         this.onFinish(); // Is this negatively impacting performance?
       })
+    },
+    getSongs: async function () {
+      const url = `https://kevinobrien-dev-default-rtdb.firebaseio.com/songs.json`;
+      const songs = await this.$axios.$get(url);
+      return songs
     },
     play: function () {
       let _wavesurfer = this.$refs.wavesurfer.wavesurfer;
