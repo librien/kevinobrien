@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card v-for="post in posts" :key="post.id">
-      <div>{{ post.title.rendered }}</div>
+      <div>{{ post }}</div>
     </v-card>
   </div>
 </template>
@@ -10,9 +10,11 @@
 export default {
   props: {
     posts: {
-      type: Array,
       required: true,
     },
   },
+  mounted: function (){ 
+    console.log(this.posts);
+  }
 }
 </script>
