@@ -72,15 +72,11 @@ export default {
 
       this.isUploading = true;
 
-      // Create a reference to the destination where we're uploading
-      // the file.
       const storage = this.$fireModule.storage();
 
       const songUrl = await storage.ref(`songs/${file.name}`)
         .put(file, metadata)
         .then((snapshot) => {
-          // Once the image is uploaded, obtain the download URL, which
-          // is the publicly accessible URL of the image.
           return snapshot.ref.getDownloadURL().then((url) => {
             return url;
           });
@@ -88,9 +84,6 @@ export default {
         .catch((error) => {
           console.error("Error uploading song", error);
         });
-
-      // When the upload ends, set the value of the blog image URL
-      // and signal that uploading is done.
 
       const user = this.$fireModule.auth().currentUser
       const idToken = await user.getIdToken(true)
