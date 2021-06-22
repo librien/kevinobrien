@@ -89,11 +89,21 @@ export default {
       const idToken = await user.getIdToken(true)
       
       this.user = user;
-      
+
+      const slugify = function convertToSlug(Text) {
+        return Text
+          .toLowerCase()
+          .replace(/[^\w ]+/g,'')
+          .replace(/ +/g,'-')
+          ;
+      }
+
       const song = {
         title: this.songTitle,
-        url: songUrl
+        url: songUrl,
+        slug: slugify(title)
       }
+      
       const response = await this.$axios.post(`https://kevinobrien-dev-default-rtdb.firebaseio.com/songs.json?auth=${idToken}`, song)
       this.isUploading = false;
       this.songDialog = false
