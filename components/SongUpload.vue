@@ -101,9 +101,11 @@ export default {
       const song = {
         title: this.songTitle,
         url: songUrl,
-        slug: slugify(title)
+        slug: slugify(this.songTitle)
       }
-      
+
+      console.log(song);
+
       const response = await this.$axios.post(`https://kevinobrien-dev-default-rtdb.firebaseio.com/songs.json?auth=${idToken}`, song)
       this.isUploading = false;
       this.songDialog = false

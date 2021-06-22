@@ -121,6 +121,9 @@ export default {
     playlist: {
       required: true,
     },
+    song: {
+      required: false,
+    }
   },
   data() {
     let _this = this;
@@ -149,7 +152,12 @@ export default {
     init: function () {
       let _wavesurfer = this.$refs.wavesurfer.wavesurfer;
       this.$nextTick(() => {
-        this.setCurrentSong(this.playlist[0], false); // Load first song in playlist by default
+        if (this.song) {
+          this.setCurrentSong(this.playlist.find(song => song.slug == this.song.slug)); // If song is passed from music.vue (from url slug) load this song
+        }
+        else {
+          this.setCurrentSong(this.playlist[0], false); // Load first song in playlist by default
+        }
         this.songOrder = this.setSongOrder(false);
         this.onFinish(); // Is this negatively impacting performance?
       });
