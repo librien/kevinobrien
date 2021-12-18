@@ -221,6 +221,7 @@ export default {
       }
     },
     prevSong: function () {
+      // TODO: Check current time of song, if < 3 sec go back to previous song. If > 3 sec, go to beginning of song
       let _wavesurfer = this.$refs.wavesurfer.wavesurfer;
       let wasPlaying = false;
       if (this.isPlaying) {
