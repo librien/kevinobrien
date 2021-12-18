@@ -27,72 +27,21 @@
                 <v-row>
                   <v-col
                     cols="12"
-                    sm="6"
-                    md="4"
                   >
                     <v-text-field
-                      label="Legal first name*"
+                      label="Title"
                       required
                     ></v-text-field>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      label="Legal middle name"
-                      hint="example of helper text only on focus"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      label="Legal last name*"
-                      hint="example of persistent helper text"
-                      persistent-hint
-                      required
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field
-                      label="Email*"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field
-                      label="Password*"
-                      type="password"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                  >
-                    <v-select
-                      :items="['0-17', '18-29', '30-54', '54+']"
-                      label="Age*"
-                      required
-                    ></v-select>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                  >
-                    <v-autocomplete
-                      :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                      label="Interests"
-                      multiple
-                    ></v-autocomplete>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <client-only>
+                      <tiptap />
+                    </client-only>
                   </v-col>
                 </v-row>
               </v-container>
-              <small>*indicates required field</small>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -122,9 +71,10 @@
 </template>
 
 <script>
-import SongUpload from '~/components/SongUpload.vue'
+import SongUpload from '~/components/SongUpload.vue';
+import tiptap from '~/components/TipTap.vue';
 export default {
-  components: { SongUpload },
+  components: { SongUpload, tiptap },
   data() {
     return {
       songDialog: false,
