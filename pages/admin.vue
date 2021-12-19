@@ -31,13 +31,14 @@
                     <v-text-field
                       label="Title"
                       required
+                      v-model="title"
                     ></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col>
                     <client-only>
-                      <tiptap />
+                      <VueEditor v-model="body"/>
                     </client-only>
                   </v-col>
                 </v-row>
@@ -55,7 +56,7 @@
               <v-btn
                 color="blue darken-1"
                 text
-                @click="postDialog = false"
+                @click="createPost()"
               >
                 Save
               </v-btn>
@@ -72,11 +73,12 @@
 
 <script>
 import SongUpload from '~/components/SongUpload.vue';
-import tiptap from '~/components/TipTap.vue';
 export default {
-  components: { SongUpload, tiptap },
+  components: { SongUpload },
   data() {
     return {
+      title: null,
+      body: null,
       songDialog: false,
       postDialog: false,
       user: null,
@@ -107,17 +109,21 @@ export default {
     createPost: async function() {
       const user = this.$fireModule.auth().currentUser
       const idToken = await user.getIdToken(true)
-      
+      const title = this.title;
+      const body = this.body
+      console.log(title);
+      console.log(body);
       this.user = user;
       
       const post = {
-        title: 'Test',
-        body: 'Test'
-    }
+        title: this.title,
+        body: this.body
+      }
       const response = await this.$axios.post(`https://kevinobrien-dev-default-rtdb.firebaseio.com/posts.json?auth=${idToken}`, post)
       const url = `https://kevinobrien-dev-default-rtdb.firebaseio.com/posts.json?auth=${idToken}`
-      const test = await this.$axios.$get(url)
-     }
+      const test = await this.$axios.$get(url);
+      this.postDialog = false
+    }
   },
   mounted() {
   }
